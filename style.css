@@ -1,0 +1,17 @@
+.table {
+    margin: 0 auto;
+    width: 50%;
+}
+
+.table__container {
+    width: 100%;
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+.table__container th {
+    border: 1px solid black;
+}
+.table__container td {
+	border: 1px solid black;
+}
