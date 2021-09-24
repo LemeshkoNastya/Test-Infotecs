@@ -26,7 +26,7 @@ const createRowsTable = (data) => {
             <tr>
                 <td>${user.name.firstName}</td>
                 <td>${user.name.lastName}</td>
-                <td>${user.about}</td>
+                <td class="table__about">${user.about}</td>
                 <td>${user.eyeColor}</td>
             </tr>
         `;

@@ -12,6 +12,14 @@
 .table__container th {
     border: 1px solid black;
 }
+
 .table__container td {
 	border: 1px solid black;
+}
+
+.table__about {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
