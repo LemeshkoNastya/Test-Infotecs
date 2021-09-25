@@ -157,8 +157,11 @@ const updateBodyTable = (rows) => {
 
 // Функция редактирования ячеек таблицы
 const editCells = () => {
-    const cellsTable = document.querySelectorAll('.' + classCellTable);// контейнер хранит все ячейки таблицы
+    const cellsTable = document.querySelectorAll('.' + classCellTable + ' span');// контейнер хранит все ячейки таблицы
     let indexCell;
+    const cellsEye = document.querySelectorAll('.' + classCellTable + ' .' + classBlockColorEye); // контейнер хранит все ячейки цвета глаз таблицы
+
+    let text = true;
 
     // проходимся по массиву ячеек с помощью forEach
     cellsTable.forEach((cell,index) => {
@@ -171,9 +174,26 @@ const editCells = () => {
         });
     });
 
+    cellsEye.forEach((cell,index) => {
+        // обрабатываем событие клика на ячейку цвета глаз
+        cell.addEventListener('click', () => {
+            form.style.display = displayBlock; // форму редактирования делаем видимой
+            textForm.innerHTML = cell.style.background; // записываем в форму для редактирования содержание ячейки
+            textForm.value = cell.style.background; // записываем в значение textarea содержание ячейки
+            indexCell = index; // записываем индекс последней кликнутой ячейки
+
+            text = false; // меняем состояние что менять нужно не текст
+        });
+    });
+
     // обрабатываем событие клика на кнопку "Заменить"
     buttonForm.addEventListener('click', () => {
-        cellsTable[indexCell].innerHTML = textForm.value; // меняем значение в ячейке на новое
+        if (text) {
+            cellsTable[indexCell].innerHTML = textForm.value; // меняем значение в ячейке на новое
+        } else {
+            cellsEye[indexCell].style.background = textForm.value; // меняем значение в ячейке на новое
+        }
+        
         form.style.display = displayNone; // форму редактирования делаем невидимой
     });
 
