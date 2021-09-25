@@ -124,3 +124,9 @@ body {
     outline: none;
     cursor: pointer;
 } 
+
+.color-eye {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+}

@@ -19,6 +19,11 @@ const classRotateButtonDisplay = 'button__display_rotate';
 const classTitleTable = 'th .title';
 const opacityNull = '0';
 const opacityDefault = '1';
+const colorBlue = '#0000FF';
+const colorBrown = '#A52A2A';
+const colorGreen = '#008000';
+const colorRed = '#FF0000';
+const classBlockColorEye = 'color-eye';
 
 // Магические числа
 const numberStartPage = 1;
@@ -80,16 +85,17 @@ const createRowsTable = (data) => {
         // создаем переменную, в которую передаем разметку строки с данными пользователя из файла
         const rowTable = `
             <tr class=${classRowTable}>
-                <td class=${classCellTable}>${user.name.firstName}</td>
-                <td class=${classCellTable}>${user.name.lastName}</td>
-                <td class=${classCellTable}>${user.about}</td>
-                <td class=${classCellTable}>${user.eyeColor}</td>
+                <td class=${classCellTable}><span>${user.name.firstName}</span></td>
+                <td class=${classCellTable}><span>${user.name.lastName}</span></td>
+                <td class=${classCellTable}><span>${user.about}</span></td>
+                <td class=${classCellTable}><span>${user.eyeColor}</span></td>
             </tr>
         `;
         bodyTable.innerHTML += rowTable; // добавляем в контейнер новую строку
     });
 
     addClassAbout(); // вызываем функцию для добавления класса колонке about
+    changeColorEye(); // вызываем функцию изменения ячеек цвета глаз пользователей
 }
 
 // Функция добавляет класс 'table__about' колонке about
@@ -108,8 +114,8 @@ const sortRowsTable = (indexButtonSort) => {
 
     // Вызываем стандартный метод сортировки для массива
     arrayRows.sort((firstRow, secondRow) => {
-        const contentFirstCell = firstRow.querySelectorAll('.' + classCellTable)[indexButtonSort].innerHTML; // записываем значение одной ячейки
-        const contentSecondCell = secondRow.querySelectorAll('.' + classCellTable)[indexButtonSort].innerHTML; // записываем значение второй ячейки
+        const contentFirstCell = firstRow.querySelectorAll('.' + classCellTable + ' span')[indexButtonSort].innerHTML; // записываем значение одной ячейки
+        const contentSecondCell = secondRow.querySelectorAll('.' + classCellTable + ' span')[indexButtonSort].innerHTML; // записываем значение второй ячейки
 
         // сравниваем значения записанных ячеек
         if (contentFirstCell > contentSecondCell) {
@@ -208,6 +214,40 @@ const showColumn = (index) => {
         let cellColumn = row.querySelectorAll('.' + classCellTable)[index]; // переменная хранит ячейку колонки
         cellColumn.style.opacity = opacityDefault; // добавляем стиль для этой ячейки
     })
+}
+
+// Функция замены ячейки цвета глаз
+const changeColorEye = () => {
+    // переменная хранит все строки таблицы
+    const rows = document.querySelectorAll('.' + classRowTable);
+
+    // проходимся по массиву строк с помощью forEach
+    rows.forEach(row => {
+        const cellsRow = row.querySelectorAll('.' + classCellTable); // переменная хранит все ячейки строки
+        const textcellsRow = cellsRow[3].querySelector('span'); // переменная хранит объект цвета глаз пользователя
+        let colorEye = textcellsRow.innerHTML; // переменная хранит название цвета глаз пользователя
+
+        textcellsRow.style.display = displayNone; // скрываем название цвета глаз с таблицы
+
+        // определяем цвет глаз в виде кода
+        switch(colorEye) {
+            case 'blue': 
+                colorEye = colorBlue;
+                break;
+            case 'brown':
+                colorEye = colorBrown;
+                break;
+            case 'green':
+                colorEye = colorGreen;
+                break;
+            case 'red':
+                colorEye = colorRed;
+                break;
+        }
+
+        // добавляем в ячейку блок цвета глаз
+        cellsRow[3].innerHTML += `<div class=${classBlockColorEye} style='background: ${colorEye}'></div>`;
+    });
 }
 
 // вызываем функцию считывания данных и передаем в нее адрес JSON файла
