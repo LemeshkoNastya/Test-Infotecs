@@ -20,10 +20,12 @@ body {
 }
 
 .table__container th {
+    width: 0;
     border: 1px solid black;
 }
 
 .button__sort {
+    margin-left: 5px;
     width: 15px;
     height: 15px;
     background: url('img/sort.svg') no-repeat;
@@ -32,8 +34,23 @@ body {
     cursor: pointer;
 }
 
+.button__display {
+    margin-left: 5px;
+    width: 15px;
+    height: 15px;
+    background: url('img/display-icon.svg') no-repeat;
+    vertical-align: middle;
+    border: none;
+    cursor: pointer;
+    transform: rotate(180deg);
+}
+
+.button__display_rotate {
+    transform: rotate(0deg);
+}
+
 .table__container td {
-    padding: 0 25px;
+    padding: 0 15px;
 	border: 1px solid black;
 }
 

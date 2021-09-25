@@ -11,8 +11,14 @@ const classTextAreaForm = '.edit-form__text';
 const classButtonForm = '.edit-form__button';
 const displayBlock = 'block';
 const displayNone = 'none';
+const displayInlineBlock = 'inline-block';
 const classButtonPrev = '.button__prev';
 const classButtonNext = '.button__next';
+const classButtonsDisplay = '.button__display';
+const classRotateButtonDisplay = 'button__display_rotate';
+const classTitleTable = 'th .title';
+const opacityNull = '0';
+const opacityDefault = '1';
 
 // Магические числа
 const numberStartPage = 1;
@@ -28,9 +34,12 @@ const textForm = document.querySelector(classTextAreaForm);
 const buttonForm = document.querySelector(classButtonForm);
 const buttonPrev = document.querySelector(classButtonPrev);
 const buttonNext = document.querySelector(classButtonNext);
+const buttonsDisplay = document.querySelectorAll(classButtonsDisplay);
+const titleColumns = document.querySelectorAll(classTitleTable);
 
 let sortTable = [false, false, false, false];
 let numberPage = numberStartPage;
+let displayColumn = [true, true, true, true];
 
 // Функции
 
@@ -168,6 +177,39 @@ const editCells = () => {
     });
 }
 
+// Функция скрытия колонки
+const hideColumn = (index) => {
+    titleColumns[index].style.display = displayNone; // добавление класса для скрытия названия колонки
+    buttonsSort[index].style.display = displayNone; // добавление класса для скрытия кнопки сортировки
+    displayColumn[index] = false; // меняем состояние колонки
+
+    // переменная хранит все строки 
+    const rows = document.querySelectorAll('.' + classRowTable);
+
+    // проходимся по массиву строк с помощью forEach
+    rows.forEach(row => {
+        let cellColumn = row.querySelectorAll('.' + classCellTable)[index]; // переменная хранит ячейку колонки
+        cellColumn.style.opacity = opacityNull; // добавляем стиль для этой ячейки
+    })
+
+}
+
+// Функция показа колонки
+const showColumn = (index) => {
+    titleColumns[index].style.display = displayInlineBlock; // добавление класса для показа названия колонки
+    buttonsSort[index].style.display = displayInlineBlock; // добавление класса для показа кнопки сортировки
+    displayColumn[index] = true; // меняем состояние колонки
+
+    // переменная хранит все строки 
+    const rows = document.querySelectorAll('.' + classRowTable);
+
+    // проходимся по массиву строк с помощью forEach
+    rows.forEach(row => {
+        let cellColumn = row.querySelectorAll('.' + classCellTable)[index]; // переменная хранит ячейку колонки
+        cellColumn.style.opacity = opacityDefault; // добавляем стиль для этой ячейки
+    })
+}
+
 // вызываем функцию считывания данных и передаем в нее адрес JSON файла
 setData(fileJSON); 
 
@@ -210,4 +252,24 @@ buttonNext.addEventListener('click', () => {
         numberPage += 1;
         setData(fileJSON);
     }
+});
+
+// проходимся по массиву кнопок скрытия/показа колонок с помощью forEach
+buttonsDisplay.forEach((button, index) => {
+    // обрабатываем событие клика кнопки скрытия/показа колонок
+    button.addEventListener('click', () => {
+        // добавление класса разворота иконки в зависимости от состояния
+        if (button.classList.contains(classRotateButtonDisplay)) {
+            button.classList.remove(classRotateButtonDisplay);
+        } else {
+            button.classList.add(classRotateButtonDisplay);
+        }
+
+        // скрытие/показ колонки в зависимости от состояния
+        if (displayColumn[index]) {
+            hideColumn(index);
+        } else {
+            showColumn(index);
+        } 
+    });
 });
