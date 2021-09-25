@@ -5,10 +5,20 @@ const classButtonSort = '.button__sort';
 const classRowTable = 'table__row';
 const classCellTable = 'table__cell';
 const classAboutCell = 'table__about';
+const classForm = '.edit-form';
+const classButtonCloseForm = '.edit-form__close';
+const classTextAreaForm = '.edit-form__text';
+const classButtonForm = '.edit-form__button';
+const displayBlock = 'block';
+const displayNone = 'none';
 
 // Переменные
 const bodyTable = document.querySelector(classBodyTable);
 const buttonsSort = document.querySelectorAll(classButtonSort);
+const form = document.querySelector(classForm);
+const closeForm = document.querySelector(classButtonCloseForm);
+const textForm = document.querySelector(classTextAreaForm);
+const buttonForm = document.querySelector(classButtonForm);
 
 let sortTable = [false, false, false, false];
 
@@ -21,6 +31,7 @@ const setData = (url) => {
         .then((response) => response.json()) // переводим формат JSON в массив
         .then((res) => {
             createRowsTable(res); // вызываем функцию создания строк таблицы
+            editCells(); // вызываем функцию редактирования ячеек
         });
 };
 
@@ -103,12 +114,40 @@ const updateBodyTable = (rows) => {
     });
 }
 
+// Функция редактирования ячеек таблицы
+const editCells = () => {
+    const cellsTable = document.querySelectorAll('.' + classCellTable);// контейнер хранит все ячейки таблицы
+    let indexCell;
+
+    // проходимся по массиву ячеек с помощью forEach
+    cellsTable.forEach((cell,index) => {
+        // обрабатываем событие клика на ячейку
+        cell.addEventListener('click', () => {
+            form.style.display = displayBlock; // форму редактирования делаем видимой
+            textForm.innerHTML = cell.innerHTML; // записываем в форму для редактирования содержание ячейки
+            textForm.value = cell.innerHTML; // записываем в значение textarea содержание ячейки
+            indexCell = index; // записываем индекс последней кликнутой ячейки
+        });
+    });
+
+    // обрабатываем событие клика на кнопку "Заменить"
+    buttonForm.addEventListener('click', () => {
+        cellsTable[indexCell].innerHTML = textForm.value; // меняем значение в ячейке на новое
+        form.style.display = displayNone; // форму редактирования делаем невидимой
+    });
+
+    // обрабатываем событие клика на кнопку крестик
+    closeForm.addEventListener('click', () => {
+        form.style.display = displayNone; // форму редактирования делаем невидимой
+    });
+}
+
 // вызываем функцию считывания данных и передаем в нее адрес JSON файла
 setData(fileJSON); 
 
 // События
 
-// проходимся по масиву кнопок сортировки с помощью forEach
+// проходимся по массиву кнопок сортировки с помощью forEach
 buttonsSort.forEach((button, index) => {
     // обрабатываем событие клика кнопки сортировки 
     button.addEventListener('click', () => {
