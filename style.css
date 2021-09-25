@@ -13,7 +13,17 @@
     border: 1px solid black;
 }
 
+.button__sort {
+    width: 15px;
+    height: 15px;
+    background: url('img/sort.svg') no-repeat;
+    vertical-align: middle;
+    border: none;
+    cursor: pointer;
+}
+
 .table__container td {
+    padding: 0 25px;
 	border: 1px solid black;
 }
 
