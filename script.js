@@ -11,6 +11,13 @@ const classTextAreaForm = '.edit-form__text';
 const classButtonForm = '.edit-form__button';
 const displayBlock = 'block';
 const displayNone = 'none';
+const classButtonPrev = '.button__prev';
+const classButtonNext = '.button__next';
+
+// Магические числа
+const numberStartPage = 1;
+const countData = 5;
+const numberFinishPage = 10;
 
 // Переменные
 const bodyTable = document.querySelector(classBodyTable);
@@ -19,8 +26,11 @@ const form = document.querySelector(classForm);
 const closeForm = document.querySelector(classButtonCloseForm);
 const textForm = document.querySelector(classTextAreaForm);
 const buttonForm = document.querySelector(classButtonForm);
+const buttonPrev = document.querySelector(classButtonPrev);
+const buttonNext = document.querySelector(classButtonNext);
 
 let sortTable = [false, false, false, false];
+let numberPage = numberStartPage;
 
 // Функции
 
@@ -30,10 +40,26 @@ const setData = (url) => {
     fetch(url) // происходит запрос данных по переданному адресу
         .then((response) => response.json()) // переводим формат JSON в массив
         .then((res) => {
-            createRowsTable(res); // вызываем функцию создания строк таблицы
+            // createRowsTable(res); // вызываем функцию создания строк таблицы
+            bodyTable.innerHTML = "";
+            // вызываем функцию создания строк таблицы и передаем в нее массив данных текущей страницы
+            createRowsTable(displayData(res)); 
             editCells(); // вызываем функцию редактирования ячеек
         });
 };
+
+// Функция передает массив данных текущей страницы
+const displayData = (data) => {
+    // переменная хранит индекс первого пользователя текущей страницы
+    let numberFirstObjects = (numberPage - numberStartPage) * countData;
+    let arrayData = [];
+
+    for(let i = numberFirstObjects; i < numberFirstObjects + countData; i++) {
+        arrayData.push(data[i]); // добавляем данные о пользователе в массив
+    }
+
+    return arrayData; // возвращаем массив данных для отображения их в таблицу
+}
 
 // Функция заполняет таблицу данными из файла
 const createRowsTable = (data) => {
@@ -168,4 +194,20 @@ buttonsSort.forEach((button, index) => {
         // меняем состояние сортировки колонки
         sortTable[index] = !sortTable[index];
     });
+});
+
+// обрабатываем событие клика кнопки на предыдущую страницу
+buttonPrev.addEventListener('click', () => {
+    if (numberPage > numberStartPage) {
+        numberPage -= 1;
+        setData(fileJSON);
+    }
+});
+
+// обрабатываем событие клика кнопки на следующую страницу
+buttonNext.addEventListener('click', () => {
+    if (numberPage < numberFinishPage) {
+        numberPage += 1;
+        setData(fileJSON);
+    }
 });

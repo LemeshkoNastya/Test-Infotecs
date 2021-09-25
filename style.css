@@ -1,3 +1,13 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+}
+
 .table {
     margin: 0 auto;
     width: 50%;
@@ -32,6 +42,25 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button__pagination {
+    width: 100px;
+    height: 40px;
+    background: url('img/arrow.svg') center center no-repeat;
+    background-size: 50% 50%;
+    cursor: pointer;
+}
+
+.button__prev {
+    margin-right: 10px;
+    transform: rotate(180deg);
 }
 
 .edit-form {
